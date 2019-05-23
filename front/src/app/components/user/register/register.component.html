@@ -1,0 +1,29 @@
+<div>
+  <img src="assets/images/users.png" id="icon" alt="User Icon" title="User Icon">
+</div>
+
+<form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onSubmit(registerForm)">
+  <input type="text" name="first_name" #first_name="ngModel" [ngModel]="model.first_name" placeholder="Firstname" required="required" [ngClass]="{'invalid-textbox' : registerForm.submitted && !first_name.valid}">
+
+  <input type="text" name="last_name" #last_name="ngModel" [ngModel]="model.last_name" placeholder="lastname" required="required" [ngClass]="{'invalid-textbox' : registerForm.submitted && !last_name.valid}">
+
+  <input type="text" name="email" #email="ngModel" [ngModel]="model.email" placeholder="Email" [pattern]="emailRegex" required="required" [ngClass]="{'invalid-textbox' : registerForm.submitted && !email.valid}">
+  <div *ngIf="registerForm.submitted && email.errors?.pattern">
+    <label class="validation-message">
+      Invalid email address.
+    </label>
+  </div>
+
+  <input type="password" name="password" #password="ngModel" [ngModel]="model.password" placeholder="Password" required="required" minlength="3"  [ngClass]="{'invalid-textbox' : registerForm.submitted && !password.valid}">
+  <div *ngIf="registerForm.submitted && password.errors?.minlength">
+    <label class="validation-message">
+      Minimum 4 characters.
+    </label>
+  </div>
+
+  <input type="submit" value="Register">
+</form>
+
+<div class="alert" *ngIf="serverErrorMessages">
+  {{ serverErrorMessages }}
+</div>

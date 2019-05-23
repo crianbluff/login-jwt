@@ -25,7 +25,7 @@ function register (req, res) {
       User.create(userData)
       .then(
         user => {
-          jwt.sign(user.dataValues, CONFIG.SECRET_TOKEN, function(error, token) {
+          jwt.sign(user.dataValues, CONFIG.SECRET_TOKEN, {expiresIn: CONFIG.TIME_EXP_TOKEN }, function(error, token) {
             if (error) {
               res.status(500).send({error});
             } else {
@@ -61,7 +61,7 @@ function login (req, res) {
       bcrypt.compare(req.body.password, user.password)
       .then( match => {
         if (match) {
-          jwt.sign(user.dataValues, CONFIG.SECRET_TOKEN, function(error, token) {
+          jwt.sign(user.dataValues, CONFIG.SECRET_TOKEN, {expiresIn: CONFIG.TIME_EXP_TOKEN }, function(error, token) {
             if (error) {
               res.status(500).send({error});
             } else {
@@ -69,7 +69,7 @@ function login (req, res) {
               }
           });
         } else {
-            res.status(200).send({message: 'Password incorrecta'});
+            res.status(500).send({message: 'Password incorrecta'});
           }
       })
       .catch( err => {
