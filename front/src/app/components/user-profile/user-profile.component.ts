@@ -18,14 +18,15 @@ export class UserProfileComponent implements OnInit {
         this.userDetails = res['user'];
       },
       err => {
-        console.log(err);
+        this.userService.deleteToken();
+        this.router.navigate(['login']);
       }
     )
   }
 
   onLogout() {
     this.userService.deleteToken();
-    this.router.navigate(['/login']);
+    this.router.navigate(['login']);
   }
 
 }

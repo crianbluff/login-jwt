@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
+import { HttpInterceptor, HttpRequest, HttpHandler } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { UserService } from './user.service';
@@ -22,7 +22,7 @@ export class AuthInterceptorService implements HttpInterceptor {
             event => { },
             err => {
               if ( err.error.auth == false ) {
-                this.router.navigateByUrl('/login');
+                this.router.navigateByUrl('login');
               }
             }
           )
