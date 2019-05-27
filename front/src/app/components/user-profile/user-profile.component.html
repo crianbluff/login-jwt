@@ -1,4 +1,4 @@
-<table class="table-fill" *ngIf="userDetails">
+<table class="table-fill" *ngIf="this.global.config.userDetails">
   <thead>
     <tr>
       <th colspan="2" class="text-center">
@@ -6,21 +6,21 @@
       </th>
     </tr>
   </thead>
-
+  
   <tbody>
     <tr>
       <td>First Name</td>
-      <td>{{ userDetails.first_name }}</td>
+      <td>{{ this.global.config.userDetails.first_name }}</td>
     </tr>
 
     <tr>
       <td>Last Name</td>
-      <td>{{ userDetails.last_name }}</td>
+      <td>{{ this.global.config.userDetails.last_name }}</td>
     </tr>
 
     <tr>
       <td>Email</td>
-      <td>{{ userDetails.email }}</td>
+      <td>{{ this.global.config.userDetails.email }}</td>
     </tr>
 
     <tr>

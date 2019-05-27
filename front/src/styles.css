@@ -20,6 +20,7 @@ a {
 }
 
 h2 {
+  cursor: pointer;
   text-align: center;
   font-size: 16px;
   font-weight: 600;

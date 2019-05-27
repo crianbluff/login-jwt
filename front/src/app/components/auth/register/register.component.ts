@@ -10,13 +10,10 @@ import { UserService } from '../../../services/user.service';
 })
 export class RegisterComponent implements OnInit {
 
-  showSuccessMessage:boolean;
-  serverErrorMessages:string;
-
   // Variable para validar el patron de un email valido
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-  //
+  // Modelo del formulario de registro
   model = {
     first_name: '',
     last_name: '',
@@ -43,7 +40,7 @@ export class RegisterComponent implements OnInit {
       },
       err => {
         // Si me devuelve error los almacena en la variable serverErrorMessages
-        this.serverErrorMessages = err.error.message;
+        console.log(err);
       }
     );
   };

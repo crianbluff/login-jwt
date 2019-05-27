@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
+import { GlobalsService } from 'src/app/services/globals.service';
 
 @Component({
   selector: 'app-login',
@@ -10,11 +11,11 @@ import { UserService } from '../../../services/user.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userServices:UserService, private router:Router) { }
+  constructor(private userServices:UserService, private router:Router, private globals:GlobalsService) { }
   
   serverErrorMessages:string;
 
-  //
+  // Modelo del formulario de login
   model = {
     email: '',
     password: ''
