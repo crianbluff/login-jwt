@@ -10,6 +10,10 @@ import { UserService } from '../../../services/user.service';
 })
 export class RegisterComponent implements OnInit {
 
+  constructor(private userService:UserService, private router:Router) { }
+
+  serverErrorMessages:string;
+
   // Variable para validar el patron de un email valido
   emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -20,8 +24,6 @@ export class RegisterComponent implements OnInit {
     email: '',
     password: ''
   };
-
-  constructor(private userService:UserService, private router:Router) { }
 
   ngOnInit() {
     // Cuando carga la página verifica si estoy logeado, en caso de estarlo me redirecciona a la ruta del usuario
@@ -40,7 +42,7 @@ export class RegisterComponent implements OnInit {
       },
       err => {
         // Si me devuelve error los almacena en la variable serverErrorMessages
-        console.log(err);
+        this.serverErrorMessages = err.error.message;
       }
     );
   };

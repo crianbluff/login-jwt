@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
-import { GlobalsService } from 'src/app/services/globals.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +10,7 @@ import { GlobalsService } from 'src/app/services/globals.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private userServices:UserService, private router:Router, private globals:GlobalsService) { }
+  constructor(private userServices:UserService, private router:Router) { }
   
   serverErrorMessages:string;
 

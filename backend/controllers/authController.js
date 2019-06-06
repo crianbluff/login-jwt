@@ -38,7 +38,7 @@ function register (req, res) {
         res.status(500).send({err});
       });
     } else {
-        res.json({error: 'El usuario ya existe'});
+        res.status(409).send({message: 'El Usuario Ya Existe'});
       }
   })
   .catch(err => {
@@ -69,7 +69,7 @@ function login (req, res) {
               }
           });
         } else {
-            res.status(500).send({message: 'Password incorrecta'});
+            res.status(401).send({message: 'Password incorrecta'});
           }
       })
       .catch( err => {
