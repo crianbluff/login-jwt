@@ -3,6 +3,10 @@ const bcrypt = require('bcrypt');
 const helpersValidPassword = require('../lib/helpers');
 const User = require('../models/User');
 const CONFIG = require('../config/config');
+const lib = require('../lib/helpers');
+const multer = require('multer');
+const jimp = require('jimp');
+const path = require('path');
 
 function register (req, res) {
   const today = new Date();
@@ -46,6 +50,37 @@ function register (req, res) {
   });
 
 };
+
+function uploadImage (req, res) {
+  lib.upload(req, res, (err) => {
+
+    jimp.read(path.join(__dirname, `../uploads/images/${lib.nameImage}.jpeg`))
+    .then(res => {
+      return res
+        .quality(50) // set JPEG quality
+        .write(path.join(__dirname, `../uploads/converter/${lib.nameImage}.jpeg`)); // save
+    })
+    .catch(err => {
+      console.error(err);
+    });
+
+    if (req.fileValidationError) {
+      res.send(req.fileValidationError);
+    } else if (err instanceof multer.MulterError) {
+        console.log(err);
+        // A Multer error occurred when uploading.
+        console.log(err.message)
+        if (err.message == 'File too large') {
+          res.send('Archivo muy pesado');
+        }
+      } else if (err) {
+          res.send(err);
+          // An unknown error occurred when uploading.
+        } else {
+            res.send('Uploaded');
+          }
+  });
+}
 
 function login (req, res) {
   User.findOne({
@@ -115,6 +150,7 @@ function profile (req, res) {
 
 module.exports = {
   register,
+  uploadImage,
   login,
   profile
 };

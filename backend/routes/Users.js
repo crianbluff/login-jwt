@@ -8,6 +8,9 @@ router.use(cors());
 // Register
 router.post('/register', authCtrl.register);
 
+// Register
+router.post('/uploads', authCtrl.uploadImage);
+
 // Login
 router.post('/login', authCtrl.login);
 
