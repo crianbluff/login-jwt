@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { UserService } from '../../../services/user.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -30,17 +31,48 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  showAlertError(msgError) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    
+    Toast.fire({
+      type: 'error',
+      title: msgError
+    })
+  }
+
+  showAlertSuccess(msgSuccess) {
+    const Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
+    });
+    
+    Toast.fire({
+      type: 'success',
+      title: msgSuccess
+    })
+  }
+
   onSubmit(form:NgForm) {
     // Función para enviar los datos del formulario de login al backend
     this.userServices.login(form.value).subscribe(
       res => {
+        let nameUser = JSON.parse(atob(res['token'].split('.')[1])).first_name;
         // De lo que me responde la api, guarda el token la almacena en el localstorage y me redirecciona a la ruta del usuario    
         this.userServices.setToken(res['token']);
         this.router.navigateByUrl('userProfile');
+        this.showAlertSuccess(`Logueado ${nameUser}`);
       },
       err => {
         // Si me devuelve error los almacena en la variable serverErrorMessages
         this.serverErrorMessages = err.error.message;
+        this.showAlertError(this.serverErrorMessages);
       }
     );
   }

@@ -7,6 +7,7 @@ const lib = require('../lib/helpers');
 const multer = require('multer');
 const jimp = require('jimp');
 const path = require('path');
+const fs = require('fs');
 
 function register (req, res) {
   const today = new Date();
@@ -48,36 +49,60 @@ function register (req, res) {
   .catch(err => {
     res.status(500).send({err});
   });
-
 };
 
 function uploadImage (req, res) {
   lib.upload(req, res, (err) => {
-
-    jimp.read(path.join(__dirname, `../uploads/images/${lib.nameImage}.jpeg`))
-    .then(res => {
-      return res
-        .quality(50) // set JPEG quality
-        .write(path.join(__dirname, `../uploads/converter/${lib.nameImage}.jpeg`)); // save
-    })
-    .catch(err => {
-      console.error(err);
-    });
-
     if (req.fileValidationError) {
-      res.send(req.fileValidationError);
+      res.status(422).send({message: req.fileValidationError});
     } else if (err instanceof multer.MulterError) {
-        console.log(err);
         // A Multer error occurred when uploading.
-        console.log(err.message)
+        console.log(err.message);
         if (err.message == 'File too large') {
-          res.send('Archivo muy pesado');
+          res.status(413).send({message: 'Archivo muy pesado'});
         }
       } else if (err) {
-          res.send(err);
+          res.status(500).send({message: err});
           // An unknown error occurred when uploading.
         } else {
-            res.send('Uploaded');
+            let extImage = path.extname(req.file.originalname);
+            jimp.read(path.join(__dirname, `../uploads/images/${lib.nameImage}${extImage}`))
+            .then( image => { 
+              fs.mkdir(`uploads/converter/${lib.nameImage}`, () => {});
+              let isPng = false;
+              if ( extImage == '.png' ) {
+                isPng = true;
+              }
+                
+              if ( image.bitmap.width > 1280 ) {
+                isPng ? image.background( 0xffffffff ) : ''
+                image
+                .resize(1280, jimp.AUTO)
+                .quality(80)
+                .write(path.join(__dirname, `../uploads/converter/${lib.nameImage}/${lib.nameImage}.jpg`));
+              }
+
+              else if ( image.bitmap.height > 960 ) {
+                isPng ? image.background( 0xffffffff ) : ''                
+                image
+                .resize(jimp.AUTO, 960)
+                .quality(80)
+                .write(path.join(__dirname, `../uploads/converter/${lib.nameImage}/${lib.nameImage}.jpg`));
+              }
+
+              else {
+                isPng ? image.background( 0xffffffff ) : ''
+                image
+                .quality(80)
+                .write(path.join(__dirname, `../uploads/converter/${lib.nameImage}/${lib.nameImage}.jpg`));
+              }
+
+              fs.unlinkSync(path.join(__dirname, `../uploads/images/${lib.nameImage}${extImage}`));
+            })
+            .catch(err => {
+              console.log(err);
+            });
+            res.status(200).send({message: 'Uploaded'});
           }
   });
 }

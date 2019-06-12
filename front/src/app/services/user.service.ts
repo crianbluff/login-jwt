@@ -22,7 +22,7 @@ export class UserService {
   postUser (authCredentials) {
     return this.http.post(`${environment.apiBaseUrl}/auth/register`, authCredentials, this.noAuthHeader);
   }
-
+  
   // Logear Usuario
   login (authCredentials) {
     return this.http.post(`${environment.apiBaseUrl}/auth/login`, authCredentials, this.noAuthHeader);

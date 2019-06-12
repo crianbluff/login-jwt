@@ -2,7 +2,7 @@
   <img src="assets/images/users.png" id="icon" alt="Users" title="Users">
 </div>
 
-<form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onSubmit(registerForm)">
+<form #registerForm="ngForm" (ngSubmit)="registerForm.valid && onSubmit(registerForm)" enctype="multipart/form-data">
   <input type="text" name="first_name" #first_name="ngModel" [ngModel]="model.first_name" placeholder="Firstname" required="required" [ngClass]="{'invalid-textbox' : registerForm.submitted && !first_name.valid}">
 
   <input type="text" name="last_name" #last_name="ngModel" [ngModel]="model.last_name" placeholder="lastname" required="required" [ngClass]="{'invalid-textbox' : registerForm.submitted && !last_name.valid}">
@@ -21,9 +21,12 @@
     </label>
   </div>
 
+  <input type="file" name="image" #image="ngModel" [ngModel]="model.image" (change)="onFileChanged($event)" accept="image/*" required="required">
+  <!-- <button (click)="image.click()">Select File</button> -->
+
   <input type="submit" value="Register">
 </form>
 
-<div class="alert" *ngIf="serverErrorMessages">
+<!-- <div class="alert" *ngIf="serverErrorMessages">
   {{ serverErrorMessages }}
-</div>
+</div> -->

@@ -2,19 +2,19 @@ const bcrypt = require('bcrypt');
 const path = require('path');
 const multer = require('multer');
 const uuid = require('uuid');
+const CONFIG = require('../config/config');
+
 let nameImage = uuid();
 
 const storage = multer.diskStorage({
   destination: path.join(__dirname, '../uploads/images'),
   filename: (req, file, cb) => {
-    // cb(null, `${uuid()}${path.extname(file.originalname).toLowerCase()}`);
-    nameImage = `${nameImage}${path.extname(file.originalname).toLowerCase()}`;
-    cb(null, nameImage);
+    let nameFinalImg = `${nameImage}${path.extname(file.originalname).toLowerCase()}`;
+    cb(null, nameFinalImg);
   }
 });
 
-let maxMegaBytes = 10;
-let maxFileSize = maxMegaBytes * 1024 * 1024;
+let maxFileSize = CONFIG.MAX_MEGABYTES * 1024 * 1024;
 const upload = multer({
   storage,
   dest: path.join(__dirname, '../uploads/images'),
